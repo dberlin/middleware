@@ -21,6 +21,7 @@ from io import BytesIO
 
 from middlewared.alert.base import AlertCategory, AlertClass, AlertLevel, SimpleOneShotAlertClass
 from middlewared.plugins.zfs import ZFSSetPropertyError
+from middlewared.plugins.pool_.dataset_recordsize import ZFS_DATASET_RECORDSIZE_CHOICES
 from middlewared.schema import (
     accepts, Attribute, Bool, Cron,
     Dict, EnumMixin, Int, List,
@@ -3093,9 +3094,7 @@ class PoolDatasetService(CRUDService):
         Inheritable(Str('deduplication', enum=['ON', 'VERIFY', 'OFF'])),
         Inheritable(Str('checksum', enum=ZFS_CHECKSUM_CHOICES)),
         Inheritable(Str('readonly', enum=['ON', 'OFF'])),
-        Inheritable(Str('recordsize', enum=[
-            '512', '1K', '2K', '4K', '8K', '16K', '32K', '64K', '128K', '256K', '512K', '1024K',
-        ]), has_default=False),
+        Inheritable(Str('recordsize', enum=ZFS_DATASET_RECORDSIZE_CHOICES, has_default=False),
         Inheritable(Str('casesensitivity', enum=['SENSITIVE', 'INSENSITIVE', 'MIXED']), has_default=False),
         Inheritable(Str('aclmode', enum=['PASSTHROUGH', 'RESTRICTED', 'DISCARD']), has_default=False),
         Inheritable(Str('acltype', enum=['OFF', 'NOACL', 'NFSV4', 'NFS4ACL', 'POSIX', 'POSIXACL']), has_default=False),
