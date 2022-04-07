@@ -3094,7 +3094,7 @@ class PoolDatasetService(CRUDService):
         Inheritable(Str('deduplication', enum=['ON', 'VERIFY', 'OFF'])),
         Inheritable(Str('checksum', enum=ZFS_CHECKSUM_CHOICES)),
         Inheritable(Str('readonly', enum=['ON', 'OFF'])),
-        Inheritable(Str('recordsize', enum=ZFS_DATASET_RECORDSIZE_CHOICES, has_default=False),
+        Inheritable(Str('recordsize'), has_default=False),
         Inheritable(Str('casesensitivity', enum=['SENSITIVE', 'INSENSITIVE', 'MIXED']), has_default=False),
         Inheritable(Str('aclmode', enum=['PASSTHROUGH', 'RESTRICTED', 'DISCARD']), has_default=False),
         Inheritable(Str('acltype', enum=['OFF', 'NOACL', 'NFSV4', 'NFS4ACL', 'POSIX', 'POSIXACL']), has_default=False),
@@ -3517,6 +3517,13 @@ class PoolDatasetService(CRUDService):
                     f'{schema}.special_small_block_size',
                     'This field can be "INHERIT", 0 or multiple of 512, up to 1048576'
                 )
+            if rs := data.get('recordsize'):
+                choices = generate_recordsize_choices()
+                if rs not in choices:
+                    verrors.add(
+                        f'{schema}.recordsize',
+                        '{rs!r} is an invalid recordsize. Valid choices are {", ".join(choices)}'
+                    )
         elif data['type'] == 'VOLUME':
             if mode == 'CREATE' and 'volsize' not in data:
                 verrors.add(f'{schema}.volsize', 'This field is required for VOLUME')
