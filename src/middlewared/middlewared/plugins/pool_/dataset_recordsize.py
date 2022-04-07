@@ -11,7 +11,7 @@ def generate_recordsize_choices():
 # https://openzfs.github.io/openzfs-docs/Performance%20and%20Tuning/Module%20Parameters.html#zfs-max-recordsize
 # Maximum supported (at time of writing) is 16MB.
 MAPPING = {
-    f'{2 << 8}': '512B',
+    f'{1 << 9}': '512B',
     f'{2 << 9}': '1K',
     f'{2 << 10}': '2K',
     f'{2 << 11}': '4K',
